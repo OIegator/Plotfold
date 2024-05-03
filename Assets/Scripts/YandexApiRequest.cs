@@ -7,11 +7,6 @@ public class YandexApiRequest : MonoBehaviour
 {
     public static YandexApiRequest Instance;
 
-    public string folderId;
-    public string iamToken;
-    public RequestObject request;
-    public TMP_Text textField;
-
     private void Awake()
     {
         if (Instance == null)
@@ -49,9 +44,7 @@ public class YandexApiRequest : MonoBehaviour
             }
             else
             {
-                string response = www.downloadHandler.text;
-                textField.text = response;
-
+                GameLogic.Instance.response = www.downloadHandler.text;
                 GameManager.Instance.SetGameState(GameState.Turn);
             }
         }

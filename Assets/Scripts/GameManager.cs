@@ -1,6 +1,5 @@
 using UnityEngine;
 using Photon.Pun;
-using Photon.Realtime;
 using System;
 
 public enum GameState
@@ -9,6 +8,7 @@ public enum GameState
     Starting,
     GeneratingResponse,
     Turn,
+    EndTurn,
     Playing,
     Ending
 }
@@ -17,10 +17,57 @@ public class GameManager : MonoBehaviourPunCallbacks
 {
     public static GameManager Instance;
 
+    public PlayerController player;
+    private int _receivedResponses = 0;
+
     private GameState gameState = GameState.Lobby;
 
     public static event Action<GameState> OnGameStateChanged;
 
+    public override void OnEnable()
+    {
+        player.onCardSelected.AddListener(OnPlayerCardSelected);
+    }
+
+    public override void OnDisable()
+    {
+        player.onCardSelected.RemoveListener(OnPlayerCardSelected);
+    }
+
+    private void OnPlayerCardSelected(int cardId)
+    {
+        Debug.Log("YOU CHOOSE CARD " + cardId);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            GameLogic.Instance.UpdateHostChoice(cardId);
+        }
+        else
+        {
+            photonView.RPC("ReceiveClientCardSelection", RpcTarget.MasterClient, cardId);
+        }
+        
+        _receivedResponses++;
+        if (_receivedResponses == 2)
+        {
+            SetGameState(GameState.GeneratingResponse);
+            _receivedResponses = 0;
+        }
+    }
+    
+    
+    [PunRPC]
+    private void ReceiveClientCardSelection(int cardId)
+    {
+        GameLogic.Instance.UpdateGuestChoice(cardId);
+        
+        _receivedResponses++;
+        if (_receivedResponses == 2)
+        {
+            SetGameState(GameState.GeneratingResponse);
+            _receivedResponses = 0;
+        }
+    }
+    
     private void Awake()
     {
         if (Instance == null)

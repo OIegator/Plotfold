@@ -1,4 +1,3 @@
-using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.UI;
@@ -42,7 +41,8 @@ public class StartGameButton : MonoBehaviourPunCallbacks
     {
         if (startButton.interactable && PhotonNetwork.IsMasterClient)
         {
-            GameManager.Instance.SetGameState(GameState.Playing);
+            GameManager.Instance.SetGameState(GameState.GeneratingResponse);
+            startButton.gameObject.SetActive(false);
         }
     }
 }

@@ -1,18 +1,27 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController Instance;
     public GameObject handDisplay;
+    
+    public UnityEvent<int> onCardSelected = new UnityEvent<int>();
 
-    private Card selectedCard;
-
-    public void SelectCard(Card card)
+    private void Awake()
     {
-        selectedCard = card;
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
-
-    public void DeselectCard()
+    public void SelectCard(int cardId)
     {
-        selectedCard = null;
+        onCardSelected.Invoke(cardId);
     }
+    
 }
