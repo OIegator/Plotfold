@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5466587f2993a7247913699e25305538, type: 3}
-  m_Name: 2
+  m_Name: 3
   m_EditorClassIdentifier: 
-  image: {fileID: 21300000, guid: 44ebd8e6f42cae445ab4b22f0a9b48a0, type: 3}
-  id: 2
-  description: "\u0442\u0438\u0433\u0440"
+  image: {fileID: 0}
+  id: 3
+  description: "\u043B\u043E\u0434\u043A\u0430"
   tags:
-  - tag: 2
+  - tag: 1
     value: 0

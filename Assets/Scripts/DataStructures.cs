@@ -42,3 +42,21 @@ public class RequestObject
         messages = new List<Message>();
     }
 }
+
+[System.Serializable]
+public class Response
+{
+    public Result result;
+}
+
+[System.Serializable]
+public class Result
+{
+    public List<Alternative> alternatives;
+}
+
+[System.Serializable]
+public class Alternative
+{
+    public Message message;
+}

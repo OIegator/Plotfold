@@ -18,6 +18,10 @@ public class StartGameButton : MonoBehaviourPunCallbacks
             {
                 startButton.gameObject.SetActive(true);
             }
+            else
+            {
+                startButton.gameObject.SetActive(false);
+            }
         }
     }
 

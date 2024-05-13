@@ -18,6 +18,7 @@ public class CardDisplay : MonoBehaviour
     {
         Debug.Log("Card with ID " + cardId + " clicked!");
         PlayerController.Instance.SelectCard(cardId);
+        HandDisplay.Instance.ClearDisplayedCards();
     }
     public void DisplayCard(Card card)
     {

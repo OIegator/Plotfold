@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     public PlayerController player;
     private int _receivedResponses = 0;
 
-    private GameState gameState = GameState.Lobby;
+    public GameState gameState = GameState.Lobby;
 
     public static event Action<GameState> OnGameStateChanged;
 
@@ -36,7 +36,6 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private void OnPlayerCardSelected(int cardId)
     {
-        Debug.Log("YOU CHOOSE CARD " + cardId);
         if (PhotonNetwork.IsMasterClient)
         {
             GameLogic.Instance.UpdateHostChoice(cardId);
@@ -102,8 +101,14 @@ public class GameManager : MonoBehaviourPunCallbacks
             SetGameState(GameState.Starting);
         }
     }
-
+    
     public void SetGameState(GameState newState)
+    {
+        photonView.RPC("InvokeSetGameState", RpcTarget.All, newState);
+    }
+    
+    [PunRPC]
+    public void InvokeSetGameState(GameState newState)
     {
         if (gameState == newState)
             return;
@@ -113,4 +118,5 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         OnGameStateChanged?.Invoke(newState);
     }
+    
 }

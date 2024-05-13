@@ -27,7 +27,7 @@ public class CardManager : MonoBehaviour
         {
             foreach (var pair in card.tags)
             {
-                if (pair.tag == tag && pair.value == absurdity)
+                if (pair.tag == tag && pair.value <= absurdity)
                 {
                     filteredCards.Add(card);
                     break;

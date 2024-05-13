@@ -6,6 +6,7 @@ public enum Tag
 {
     Default,
     Transport,
+    Route,
     Weapon
 }
 

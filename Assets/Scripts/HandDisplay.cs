@@ -3,12 +3,23 @@ using System.Collections.Generic;
 
 public class HandDisplay : MonoBehaviour
 {
+    public static HandDisplay Instance;
     public GameObject cardPrefab;
     public Transform hand;
-    public float cardSpacing = 1f;
 
     private List<GameObject> displayedCards = new List<GameObject>();
     
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
     public void DisplayCards(List<Card> cards)
     {
         ClearDisplayedCards();

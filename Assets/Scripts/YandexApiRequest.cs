@@ -45,7 +45,7 @@ public class YandexApiRequest : MonoBehaviour
             else
             {
                 GameLogic.Instance.response = www.downloadHandler.text;
-                GameManager.Instance.SetGameState(GameState.Turn);
+                GameManager.Instance.SetGameState(GameState.EndTurn);
             }
         }
     }
