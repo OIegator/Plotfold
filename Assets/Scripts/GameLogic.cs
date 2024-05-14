@@ -9,21 +9,26 @@ public class GameLogic : MonoBehaviourPunCallbacks
 {
     public static GameLogic Instance;
 
-    public TMP_Text textField;
+    public TMP_Text responseField;
+    public TMP_Text questionField;
+    
     public string response;
     private readonly RequestObject _request = new();
-    public string basePrompt;
+    
+    public string currentPrompt;
+    public string currentQuestion;
+    private int _currentTurn;
+    
     public int hostChoice;
     public int guestChoice;
+    
     public HandDisplay handDisplay;
     public CardManager cardManager;
+    
 
-    public int numberOfTurns = 5;
-    private int _currentTurn = 0;
-
-    public List<TurnCondition> turnConditions = new List<TurnCondition>();
-
-    public List<string> turnPrompts = new List<string>();
+    public List<TurnCondition> turnConditions = new();
+    public List<string> turnPrompts = new();
+    public List<string> turnQuestions = new();
 
     [Serializable]
     public struct TurnCondition
@@ -48,7 +53,8 @@ public class GameLogic : MonoBehaviourPunCallbacks
     {
         if (turnPrompts.Count > 0)
         {
-            basePrompt = turnPrompts[0];
+            currentPrompt = turnPrompts[0];
+            currentQuestion = turnQuestions[0];
         }
     }
 
@@ -67,7 +73,10 @@ public class GameLogic : MonoBehaviourPunCallbacks
         switch (newState)
         {
             case GameState.GeneratingResponse:
-                StartCoroutine(YandexApiRequest.Instance.GenerateResponse(SetupRequest()));
+                if (PhotonNetwork.IsMasterClient)
+                {
+                    StartCoroutine(YandexApiRequest.Instance.GenerateResponse(SetupRequest()));
+                }
                 break;
             case GameState.EndTurn:
                 UpdateBasePrompt();
@@ -75,9 +84,8 @@ public class GameLogic : MonoBehaviourPunCallbacks
             case GameState.Turn:
                 if (PhotonNetwork.IsMasterClient)
                 {
-                    photonView.RPC("NotifyGuestTurnState", RpcTarget.All, response);
+                    photonView.RPC("NotifyGuestTurnState", RpcTarget.AllViaServer, response);
                 }
-
                 handDisplay.DisplayCards(cardManager.GetCardsByTagAndAbsurdity(turnConditions[_currentTurn].tag,
                     turnConditions[_currentTurn].absurdity, 3));
                 break;
@@ -90,7 +98,6 @@ public class GameLogic : MonoBehaviourPunCallbacks
                 {
                     photonView.RPC("EndGame", RpcTarget.All, response);
                 }
-
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
@@ -101,13 +108,15 @@ public class GameLogic : MonoBehaviourPunCallbacks
     private void NotifyGuestTurnState(string responseNew)
     {
         Response jsonResponse = JsonConvert.DeserializeObject<Response>(responseNew);
-        if (jsonResponse.result.alternatives.Count > 0)
+        if (jsonResponse != null && jsonResponse.result.alternatives.Count > 0)
         {
             string text = jsonResponse.result.alternatives[0].message.text;
 
             text = text.Replace("\\n", "\n");
 
-            textField.text = text;
+            responseField.text = text;
+            responseField.gameObject.transform.position = Vector3.zero;
+            questionField.text = currentQuestion;
         }
     }
 
@@ -115,13 +124,14 @@ public class GameLogic : MonoBehaviourPunCallbacks
     private void EndGame(string responseNew)
     {
         Response jsonResponse = JsonConvert.DeserializeObject<Response>(responseNew);
-        if (jsonResponse.result.alternatives.Count > 0)
+        if (jsonResponse != null && jsonResponse.result.alternatives.Count > 0)
         {
             string text = jsonResponse.result.alternatives[0].message.text;
 
             text = text.Replace("\\n", "\n");
 
-            textField.text = text + " \n \n Спасибо за игру!";
+            responseField.text = text;
+            questionField.text = "Спасибо за игру!";
         }
     }
 
@@ -137,16 +147,17 @@ public class GameLogic : MonoBehaviourPunCallbacks
             return;
         }
 
-        basePrompt = turnPrompts[_currentTurn];
+        currentPrompt = turnPrompts[_currentTurn];
+        currentQuestion = turnQuestions[_currentTurn];
         if (GameManager.Instance.gameState == GameState.EndTurn) GameManager.Instance.SetGameState(GameState.Turn);
     }
 
     private RequestObject SetupRequest()
     {
-        basePrompt = basePrompt.Replace("{hostChoice}", CardManager.Instance.allCards[hostChoice].description);
-        basePrompt = basePrompt.Replace("{guestChoice}", CardManager.Instance.allCards[guestChoice].description);
+        currentPrompt = currentPrompt.Replace("{hostChoice}", CardManager.Instance.allCards[hostChoice].description);
+        currentPrompt = currentPrompt.Replace("{guestChoice}", CardManager.Instance.allCards[guestChoice].description);
 
-        _request.messages.Add(new Message("user", basePrompt));
+        _request.messages.Add(new Message("user", currentPrompt));
 
         Debug.Log(_request.messages[^1].text);
         return _request;

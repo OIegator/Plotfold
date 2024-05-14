@@ -7,7 +7,7 @@ public class HandDisplay : MonoBehaviour
     public GameObject cardPrefab;
     public Transform hand;
 
-    private List<GameObject> displayedCards = new List<GameObject>();
+    private readonly List<GameObject> _displayedCards = new();
     
     private void Awake()
     {
@@ -23,29 +23,28 @@ public class HandDisplay : MonoBehaviour
     public void DisplayCards(List<Card> cards)
     {
         ClearDisplayedCards();
-        
-        for (int i = 0; i < cards.Count; i++)
-        {
 
+        foreach (var card in cards)
+        {
             GameObject newCardObject = Instantiate(cardPrefab, hand);
 
             CardDisplay cardDisplay = newCardObject.GetComponent<CardDisplay>();
             if (cardDisplay != null)
             {
-                cardDisplay.DisplayCard(cards[i]);
+                cardDisplay.DisplayCard(card);
             }
             
-            displayedCards.Add(newCardObject);
+            _displayedCards.Add(newCardObject);
         }
     }
     
     public void ClearDisplayedCards()
     {
-        foreach (GameObject cardObject in displayedCards)
+        foreach (GameObject cardObject in _displayedCards)
         {
             Destroy(cardObject);
         }
 
-        displayedCards.Clear();
+        _displayedCards.Clear();
     }
 }

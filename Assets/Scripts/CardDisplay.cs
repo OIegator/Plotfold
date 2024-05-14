@@ -6,12 +6,12 @@ public class CardDisplay : MonoBehaviour
     public Image cardImage;
     public int cardId;
     
-    private Button button;
+    private Button _button;
 
     private void Start()
     {
-        button = GetComponent<Button>();
-        button.onClick.AddListener(OnCardClicked);
+        _button = GetComponent<Button>();
+        _button.onClick.AddListener(OnCardClicked);
     }
     
     private void OnCardClicked()

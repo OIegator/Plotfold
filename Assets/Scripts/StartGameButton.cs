@@ -4,23 +4,23 @@ using UnityEngine.UI;
 
 public class StartGameButton : MonoBehaviourPunCallbacks
 {
-    private Button startButton;
+    private Button _startButton;
 
     private void Start()
     {
-        startButton = GetComponent<Button>();
+        _startButton = GetComponent<Button>();
 
-        startButton.interactable = false;
+        _startButton.interactable = false;
 
         if (PhotonNetwork.InRoom)
         {
             if (PhotonNetwork.IsMasterClient)
             {
-                startButton.gameObject.SetActive(true);
+                _startButton.gameObject.SetActive(true);
             }
             else
             {
-                startButton.gameObject.SetActive(false);
+                _startButton.gameObject.SetActive(false);
             }
         }
     }
@@ -29,7 +29,7 @@ public class StartGameButton : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.CurrentRoom.PlayerCount > 1)
         {
-            startButton.interactable = true;
+            _startButton.interactable = true;
         }
     }
 
@@ -37,16 +37,16 @@ public class StartGameButton : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.CurrentRoom.PlayerCount > 1)
         {
-            startButton.interactable = true;
+            _startButton.interactable = true;
         }
     }
 
     public void StartGame()
     {
-        if (startButton.interactable && PhotonNetwork.IsMasterClient)
+        if (_startButton.interactable && PhotonNetwork.IsMasterClient)
         {
             GameManager.Instance.SetGameState(GameState.GeneratingResponse);
-            startButton.gameObject.SetActive(false);
+            _startButton.gameObject.SetActive(false);
         }
     }
 }
