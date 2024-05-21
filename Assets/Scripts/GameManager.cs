@@ -48,7 +48,10 @@ public class GameManager : MonoBehaviourPunCallbacks
         _receivedResponses++;
         if (_receivedResponses == 2)
         {
-            SetGameState(GameState.GeneratingResponse);
+            if (PhotonNetwork.IsMasterClient)
+            {
+                SetGameState(GameState.GeneratingResponse);
+            }
             _receivedResponses = 0;
         }
     }
@@ -62,7 +65,11 @@ public class GameManager : MonoBehaviourPunCallbacks
         _receivedResponses++;
         if (_receivedResponses == 2)
         {
-            SetGameState(GameState.GeneratingResponse);
+            
+            if (PhotonNetwork.IsMasterClient)
+            {
+                SetGameState(GameState.GeneratingResponse);
+            }
             _receivedResponses = 0;
         }
     }

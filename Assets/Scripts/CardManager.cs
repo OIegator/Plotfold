@@ -23,6 +23,7 @@ public class CardManager : MonoBehaviour
     {
         List<Card> filteredTagCards = new List<Card>();
         List<Card> matchingAbsurdityCards = new List<Card>();
+        List<Card> randomCards = new List<Card>();
 
         foreach (Card card in allCards)
         {
@@ -31,12 +32,7 @@ public class CardManager : MonoBehaviour
                 if (pair.tag == tag)
                 {
                     filteredTagCards.Add(card);
-
-                    if (pair.value == absurdity)
-                    {
-                        matchingAbsurdityCards.Add(card);
-                    }
-
+                    if (pair.value == absurdity) matchingAbsurdityCards.Add(card);
                     break;
                 }
             }
@@ -48,7 +44,6 @@ public class CardManager : MonoBehaviour
             return filteredTagCards;
         }
 
-        List<Card> randomCards = new List<Card>();
         
         // If there are cards with the corresponding absurdity value, choose at least one of them
         if (matchingAbsurdityCards.Count > 0)
@@ -60,7 +55,8 @@ public class CardManager : MonoBehaviour
 
         // Pick the rest of the random cards
         HashSet<int> chosenIndices = new HashSet<int>();
-        int cardsToChoose = Mathf.Min(count - 1, filteredTagCards.Count);
+        int cardsToChoose = Mathf.Min(count, filteredTagCards.Count + 1);
+        Debug.Log(cardsToChoose);
         while (randomCards.Count < cardsToChoose)
         {
             int randomIndex = Random.Range(0, filteredTagCards.Count);

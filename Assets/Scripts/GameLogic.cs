@@ -115,6 +115,7 @@ public class GameLogic : MonoBehaviourPunCallbacks
             text = text.Replace("\\n", "\n");
 
             responseField.text = text;
+            Debug.Log(text);
             responseField.gameObject.transform.position = Vector3.zero;
             questionField.text = currentQuestion;
         }
