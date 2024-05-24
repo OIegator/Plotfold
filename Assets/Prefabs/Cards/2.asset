@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5466587f2993a7247913699e25305538, type: 3}
   m_Name: 2
   m_EditorClassIdentifier: 
-  image: {fileID: 21300000, guid: 44ebd8e6f42cae445ab4b22f0a9b48a0, type: 3}
+  image: {fileID: 21300000, guid: 7163f2b89aeb14c42b34b47e74eae673, type: 3}
   id: 2
-  description: "\u0442\u0438\u0433\u0440"
+  description: "\u043F\u0443\u0441\u0442\u044B\u043D\u044F"
   tags:
   - tag: 2
     value: 0

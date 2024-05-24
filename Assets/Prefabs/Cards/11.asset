@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5466587f2993a7247913699e25305538, type: 3}
   m_Name: 11
   m_EditorClassIdentifier: 
-  image: {fileID: 21300000, guid: 7377013011b4c3348809ff574abe799e, type: 3}
+  image: {fileID: 21300000, guid: 17f65fc5cacf05544b213182d799ce4d, type: 3}
   id: 11
   description: "\u0449\u0435\u043B\u044C \u0432 \u043F\u043E\u043B\u0443"
   tags:

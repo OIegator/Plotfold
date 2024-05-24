@@ -60,3 +60,11 @@ public class Alternative
 {
     public Message message;
 }
+
+
+[System.Serializable]
+public class IamTokenResponse
+{
+    public string iamToken;
+    public string expiresAt;
+}

@@ -53,6 +53,13 @@ public class GameLogic : MonoBehaviourPunCallbacks
     {
         if (turnPrompts.Count > 0)
         {
+            _request.messages.Add(new Message("system", "Ты - сказочник. Ты будешь рассказывать историю о том" +
+                                                        " как два рыцаря Альфа и Бета поспорили кто из них сможет лучше" +
+                                                        " спасти принцессу из лап дракона. Твоя задача" +
+                                                        " постепенно рассказывать историю по запросу пользователя." +
+                                                        " Пользователь будет за скольок предложений тебе нужно описать" +
+                                                        " какой-то фрагмент истории, после чего описывать решения героев," +
+                                                        "а ты будешь продолжать историю учитывая эти решения"));
             currentPrompt = turnPrompts[0];
             currentQuestion = turnQuestions[0];
         }
@@ -116,6 +123,7 @@ public class GameLogic : MonoBehaviourPunCallbacks
 
             responseField.text = text;
             Debug.Log(text);
+            _request.messages.Add(new Message("assistant", text));
             responseField.gameObject.transform.position = Vector3.zero;
             questionField.text = currentQuestion;
         }
@@ -132,6 +140,8 @@ public class GameLogic : MonoBehaviourPunCallbacks
             text = text.Replace("\\n", "\n");
 
             responseField.text = text;
+            responseField.gameObject.transform.position = Vector3.zero;
+            Debug.Log(text);
             questionField.text = "Спасибо за игру!";
         }
     }
@@ -171,6 +181,6 @@ public class GameLogic : MonoBehaviourPunCallbacks
 
     public void UpdateGuestChoice(int cardId)
     {
-        hostChoice = cardId;
+        guestChoice = cardId;
     }
 }

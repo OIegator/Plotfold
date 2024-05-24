@@ -49,4 +49,31 @@ public class YandexApiRequest : MonoBehaviour
             }
         }
     }
+
+    public IEnumerator FetchIamToken()
+    {
+        string url = "https://iam.api.cloud.yandex.net/iam/v1/tokens";
+        string jsonData = "{\"yandexPassportOauthToken\": \"" + Constants.OauthToken + "\"}";
+
+        using (UnityWebRequest www = new UnityWebRequest(url, "POST"))
+        {
+            www.SetRequestHeader("Content-Type", "application/json");
+
+            byte[] jsonBytes = System.Text.Encoding.UTF8.GetBytes(jsonData);
+            www.uploadHandler = new UploadHandlerRaw(jsonBytes);
+            www.downloadHandler = new DownloadHandlerBuffer();
+
+            yield return www.SendWebRequest();
+
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("Error: " + www.error);
+            }
+            else
+            {
+                IamTokenResponse response = JsonUtility.FromJson<IamTokenResponse>(www.downloadHandler.text);
+                Constants.IamToken = response.iamToken;
+            }
+        }
+    }
 }

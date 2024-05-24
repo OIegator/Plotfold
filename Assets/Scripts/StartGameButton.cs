@@ -1,3 +1,4 @@
+using System.Collections;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.UI;
@@ -45,8 +46,15 @@ public class StartGameButton : MonoBehaviourPunCallbacks
     {
         if (_startButton.interactable && PhotonNetwork.IsMasterClient)
         {
-            GameManager.Instance.SetGameState(GameState.GeneratingResponse);
-            _startButton.gameObject.SetActive(false);
+            StartCoroutine(StartGameRoutine());
         }
+    }
+
+    private IEnumerator StartGameRoutine()
+    {
+        yield return YandexApiRequest.Instance.FetchIamToken();
+
+        GameManager.Instance.SetGameState(GameState.GeneratingResponse);
+        _startButton.gameObject.SetActive(false);
     }
 }
