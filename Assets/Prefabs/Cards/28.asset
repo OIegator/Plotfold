@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 28
   m_EditorClassIdentifier: 
   image: {fileID: 21300000, guid: acf560105091d524c87c2a05cfd4c034, type: 3}
-  id: 27
+  id: 28
   description: "\u043C\u0435\u0442\u043B\u0430 \u0441\u0442\u043E\u044F\u0449\u0430\u044F
     \u043D\u0430 \u0431\u0435\u0440\u0435\u0433\u0443"
   tags:

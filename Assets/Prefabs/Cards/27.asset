@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5466587f2993a7247913699e25305538, type: 3}
   m_Name: 27
   m_EditorClassIdentifier: 
-  image: {fileID: 21300000, guid: 4cb5cc77dcb49a24d88b7ab8b1e9898d, type: 3}
+  image: {fileID: 21300000, guid: a38fe99bf9ff5d94f854f7723032fc7b, type: 3}
   id: 27
-  description: "\u0447\u0435\u0440\u0435\u043F\u0430\u0445\u0430"
+  description: "\u043C\u0440\u0430\u043C\u043E\u0440\u043D\u0430\u044F \u0432\u0430\u0437\u0430"
   tags:
-  - tag: 1
-    value: 2
+  - tag: 4
+    value: 0
   - tag: 3
-    value: 2
+    value: 1
